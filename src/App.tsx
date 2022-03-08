@@ -7,6 +7,7 @@ import {
 
 import ConnectWallet from './components/ConnectWallet';
 import WalletInfo from './components/WalletInfo';
+import CompoundTester from './components/CompoundTester';
 
 import './App.css';
 
@@ -24,6 +25,8 @@ function App() {
       <div className="App">
         <WalletInfo />
         <ConnectWallet />
+
+        <CompoundTester />
       </div>
     </Web3ReactProvider>
   );
