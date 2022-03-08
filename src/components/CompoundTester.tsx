@@ -23,12 +23,26 @@ const CompoundTester = () => {
     compound.supply(token, value);
   }
 
+  function borrow(token: string, value: number | string | BigNumber) {
+    // TODO validate token
+    // TODO: validate number
+    // @ts-ignore
+    compound.borrow(token, value);
+  }
+
+  function redeem(token: string, value: number | string | BigNumber) {
+    // TODO validate token
+    // TODO: validate number
+    // @ts-ignore
+    compound.redeem(token, value);
+  }
+
   return (
     <div className="wallet-info">
       <h2>Compound SDK</h2>
       <CompoundFunctionFactory name="Supply" fn={supply} />
-      <CompoundFunctionFactory name="Borrow" fn={supply} />
-      <CompoundFunctionFactory name="Redeem" fn={supply} />
+      <CompoundFunctionFactory name="Borrow" fn={borrow} />
+      <CompoundFunctionFactory name="Redeem" fn={redeem} />
     </div>
   );
 };
