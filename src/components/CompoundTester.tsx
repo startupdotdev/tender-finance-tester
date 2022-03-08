@@ -5,6 +5,7 @@ import Compound from '@compound-finance/compound-js';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { CompoundInstance } from '@compound-finance/compound-js/dist/nodejs/types';
 import CompoundFunctionFactory  from "./compound/compoundFunctionFactory";
+import { BigNumber } from 'ethers';
 
 const CompoundTester = () => {
 
