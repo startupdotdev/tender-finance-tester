@@ -4,8 +4,10 @@ import { Web3Provider } from '@ethersproject/providers';
 import Compound from '@compound-finance/compound-js';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { CompoundInstance } from '@compound-finance/compound-js/dist/nodejs/types';
+import CompoundFunctionFactory  from "./compound/compoundFunctionFactory";
 
 const CompoundTester = () => {
+
   const web3React: Web3ReactContextInterface<Web3Provider> = useWeb3React<Web3Provider>();
 
   // @ts-ignore
@@ -13,17 +15,20 @@ const CompoundTester = () => {
 
   console.log("compound", compound);
 
-  let c = Compound;
-  
   // @ts-ignore
-  console.log("Compound.ETH", Compound.ETH);
-
-  // @ts-ignore
-  compound.supply(Compound.ETH, 0.00001)
+  function supply(token: string, value: number | string | BigNumber) {
+    // TODO validate token
+    // TODO: validate number
+    // @ts-ignore
+    compound.supply(token, value);
+  }
 
   return (
     <div className="wallet-info">
-      <p>test</p>
+      <h2>Compound SDK</h2>
+      <CompoundFunctionFactory name="Supply" fn={supply} />
+      <CompoundFunctionFactory name="Borrow" fn={supply} />
+      <CompoundFunctionFactory name="Redeem" fn={supply} />
     </div>
   );
 };
