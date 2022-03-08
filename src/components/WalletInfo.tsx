@@ -5,7 +5,10 @@ const WalletInfo = () => {
   const { active, chainId, account, error } = useWeb3React<Web3Provider>();
   return (
     <div className="wallet-info">
-      <p>Create React Ethereum DApp</p>
+      <h2>
+        Wallet Info
+      </h2>
+      <p>Tender.Finance Tester</p>
       <p>active: {active.toString()}</p>
       {active && (
         <div>

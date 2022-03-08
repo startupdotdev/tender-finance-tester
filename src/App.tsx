@@ -8,6 +8,7 @@ import {
 import ConnectWallet from './components/ConnectWallet';
 import WalletInfo from './components/WalletInfo';
 import CompoundTester from './components/CompoundTester';
+import Settings from './components/Settings';
 
 import './App.css';
 
@@ -24,6 +25,7 @@ function App() {
     <Web3ReactProvider getLibrary={getLibrary}>
       <div className="App">
         <WalletInfo />
+        <Settings />
         <ConnectWallet />
 
         <CompoundTester />
