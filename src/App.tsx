@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import { Web3ReactProvider } from '@web3-react/core';
 import {
   ExternalProvider,
@@ -8,7 +9,7 @@ import {
 import ConnectWallet from './components/ConnectWallet';
 import WalletInfo from './components/WalletInfo';
 import CompoundTester from './components/CompoundTester';
-import Settings from './components/Settings';
+import AddToken from './components/AddToken';
 
 import './App.css';
 
@@ -20,15 +21,53 @@ function getLibrary(
   return library;
 }
 
+interface Token {
+  name: string;
+  address: string;
+  chainId?: string;
+}
+
 function App() {
+  const [tokens, setTokens] = useState<Token[]>([]);
+
+  useEffect(() => {
+    // TODO: Refactor to use local storage (ideally w/o infinte loop)
+    if (tokens.length > 0) {
+      return;
+    }
+
+    setTokens([
+      {
+        name: "cEth",
+        address: "0x01212312312312312"
+      },
+
+      {
+        name: "sheeEth",
+        address: "0x01212312312312312"
+      },
+
+      {
+        name: "bagCoin2",
+        address: "0x01212312312312312"
+      }
+    ]);
+  });
+
+  function addToken(token: Token) {
+    setTokens([...tokens, token]);
+  }
+
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <div className="App">
         <WalletInfo />
-        <Settings />
         <ConnectWallet />
+        <AddToken addToken={addToken}/>
+        {tokens.map((token) => {
+          return <CompoundTester token={token} />;
+        })}
 
-        <CompoundTester />
       </div>
     </Web3ReactProvider>
   );

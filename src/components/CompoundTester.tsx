@@ -8,15 +8,22 @@ import CompoundFunctionFactory  from "./compound/compoundFunctionFactory";
 import { BigNumber, ethers } from 'ethers';
 import sampleAbi from '../lib/connectors/sampleAbi';
 
-const CompoundTester = () => {
+interface Token {
+  name: string;
+  address: string;
+}
+
+interface PropsTypes {
+  token: Token
+}
+
+const CompoundTester = ({token: {name, address}}: PropsTypes) => {
 
   const web3React: Web3ReactContextInterface<Web3Provider> = useWeb3React<Web3Provider>();
 
   // @ts-ignore
   const compound: CompoundInstance = new Compound(web3React.library?.getSigner());
   const testaddr: string = "0xd6801a1DfFCd0a410336Ef88DeF4320D6DF1883e";
-
-  console.log("compound", compound);
 
   // @ts-ignore
   async function supply(token: string, value: string) {
@@ -48,10 +55,9 @@ const CompoundTester = () => {
 
   return (
     <div className="wallet-info">
-      <h2>Compound SDK</h2>
-      (supply using ethers directly)<br/>
+      <h2>Token {name} ({address})</h2>
+      <button>x Remove</button>
       <CompoundFunctionFactory name="Supply" fn={supply} />
-      (borrow and redeem using SDK)<br/>
       <CompoundFunctionFactory name="Borrow" fn={borrow} />
       <CompoundFunctionFactory name="Redeem" fn={redeem} />
     </div>
