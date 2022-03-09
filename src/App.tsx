@@ -11,6 +11,8 @@ import WalletInfo from './components/WalletInfo';
 import CompoundTester from './components/CompoundTester';
 import AddToken from './components/AddToken';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import './App.css';
 
 function getLibrary(
@@ -22,6 +24,7 @@ function getLibrary(
 }
 
 interface Token {
+  id: string;
   name: string;
   address: string;
   chainId?: string;
@@ -38,16 +41,19 @@ function App() {
 
     setTokens([
       {
+        id: uuidv4(),
         name: "cEth",
         address: "0x01212312312312312"
       },
 
       {
+        id: uuidv4(),
         name: "sheeEth",
         address: "0x01212312312312312"
       },
 
       {
+        id: uuidv4(),
         name: "bagCoin2",
         address: "0x01212312312312312"
       }
@@ -58,6 +64,10 @@ function App() {
     setTokens([...tokens, token]);
   }
 
+  function removeToken(id: string) {
+    setTokens([...tokens.filter(t => t.id != id)]);
+  }
+
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <div className="App">
@@ -65,7 +75,9 @@ function App() {
         <ConnectWallet />
         <AddToken addToken={addToken}/>
         {tokens.map((token) => {
-          return <CompoundTester token={token} />;
+          return <div className="w-full" key={token.id}>
+            <CompoundTester removeToken={() => removeToken(token.id)} token={token} />
+          </div>
         })}
 
       </div>

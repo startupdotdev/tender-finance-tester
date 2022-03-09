@@ -14,10 +14,11 @@ interface Token {
 }
 
 interface PropsTypes {
-  token: Token
+  token: Token;
+  removeToken: Function;
 }
 
-const CompoundTester = ({token: {name, address}}: PropsTypes) => {
+const CompoundTester = ({token: {name, address}, removeToken}: PropsTypes) => {
 
   const web3React: Web3ReactContextInterface<Web3Provider> = useWeb3React<Web3Provider>();
 
@@ -56,7 +57,7 @@ const CompoundTester = ({token: {name, address}}: PropsTypes) => {
   return (
     <div className="wallet-info">
       <h2>Token {name} ({address})</h2>
-      <button>x Remove</button>
+      <button onClick={() => removeToken()}>x Remove</button>
       <CompoundFunctionFactory name="Supply" fn={supply} />
       <CompoundFunctionFactory name="Borrow" fn={borrow} />
       <CompoundFunctionFactory name="Redeem" fn={redeem} />
