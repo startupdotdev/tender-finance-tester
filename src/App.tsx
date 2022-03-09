@@ -1,3 +1,4 @@
+import useLocalStorage from './hooks/use-local-storage';
 import {useEffect, useState} from 'react';
 import { Web3ReactProvider } from '@web3-react/core';
 import {
@@ -30,35 +31,15 @@ interface Token {
   chainId?: string;
 }
 
+let DUMMY_TOKEN: Token = {
+  id: uuidv4(),
+  name: "cEth",
+  address: "0x01212312312312312"
+};
+
 function App() {
-  const [tokens, setTokens] = useState<Token[]>([]);
 
-  useEffect(() => {
-    // TODO: Refactor to use local storage (ideally w/o infinte loop)
-    if (tokens.length > 0) {
-      return;
-    }
-
-    setTokens([
-      {
-        id: uuidv4(),
-        name: "cEth",
-        address: "0x01212312312312312"
-      },
-
-      {
-        id: uuidv4(),
-        name: "sheeEth",
-        address: "0x01212312312312312"
-      },
-
-      {
-        id: uuidv4(),
-        name: "bagCoin2",
-        address: "0x01212312312312312"
-      }
-    ]);
-  });
+  const [tokens, setTokens] = useLocalStorage<Token[]>("tokens", [DUMMY_TOKEN]);
 
   function addToken(token: Token) {
     setTokens([...tokens, token]);
@@ -74,6 +55,7 @@ function App() {
         <WalletInfo />
         <ConnectWallet />
         <AddToken addToken={addToken}/>
+        
         {tokens.map((token) => {
           return <div className="w-full" key={token.id}>
             <CompoundTester removeToken={() => removeToken(token.id)} token={token} />
