@@ -11,7 +11,7 @@ interface Props {
 const AddToken = (props: Props) => {
   const { chainId } = useWeb3React<Web3Provider>();
 
-  const {register, handleSubmit, setValue} = useForm();
+  const {register, handleSubmit, setValue, formState: {errors}, reset} = useForm();
 
   useEffect(() => {
     setValue("chainId", `${chainId}`);
@@ -22,12 +22,19 @@ const AddToken = (props: Props) => {
 
   return (
     
-    <form onSubmit={handleSubmit(data => props.addToken(data))} className="wallet-info">
+    <form onSubmit={handleSubmit(data => {
+      props.addToken(data);
+      reset();
+    })} className="wallet-info">
       <h2>
         Add new token
       </h2>
-      <p> Token Address <input {...register("address")} placeholder='Token Address'/> </p>
-      <p> Token Name <input placeholder='Token Name' {...register("name")} /> </p>
+      <p> Token Address <input {...register("address", {required: true})} placeholder='Token Address'/> </p>
+      {errors.address?.type === 'required' && <p style={{color: 'red'}}>Token Address is required</p>}
+
+      <p> Token Name <input placeholder='Token Name' {...register("name", {required: true})} /> </p>
+      {errors.name?.type ==='required' && <p style={{color: 'red'}}>Token Name is required</p>}
+
       <input type="hidden" {...register("chainId")} />
       <input type="hidden" {...register("id")} />
       <button>Add Token</button>
