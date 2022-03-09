@@ -3,6 +3,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useEffect } from 'react';
 import {useForm} from "react-hook-form";
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
 
 interface Props {
   addToken: Function;
@@ -24,6 +25,7 @@ const AddToken = (props: Props) => {
     
     <form onSubmit={handleSubmit(data => {
       props.addToken(data);
+      toast("New token added!");
       reset();
     })} className="wallet-info">
       <h2>

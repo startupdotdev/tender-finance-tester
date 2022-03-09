@@ -1,3 +1,6 @@
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import useLocalStorage from './hooks/use-local-storage';
 import {useEffect, useState} from 'react';
 import { Web3ReactProvider } from '@web3-react/core';
@@ -43,14 +46,17 @@ function App() {
 
   function addToken(token: Token) {
     setTokens([...tokens, token]);
+    toast("New token added!");
   }
 
   function removeToken(id: string) {
     setTokens([...tokens.filter(t => t.id != id)]);
+    toast("Token removed!");
   }
 
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
+      <ToastContainer />
       <div className="App">
         <WalletInfo />
         <ConnectWallet />
