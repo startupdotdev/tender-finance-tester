@@ -8,17 +8,13 @@ import CompoundFunctionFactory  from "./compound/compoundFunctionFactory";
 import { BigNumber, ethers } from 'ethers';
 import sampleAbi from '../lib/connectors/sampleAbi';
 
-interface Token {
-  name: string;
-  address: string;
-}
 
 interface PropsTypes {
   token: Token;
   removeToken: Function;
 }
 
-const CompoundTester = ({token: {name, address}, removeToken}: PropsTypes) => {
+const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTypes) => {
 
   const web3React: Web3ReactContextInterface<Web3Provider> = useWeb3React<Web3Provider>();
 
@@ -54,7 +50,8 @@ const CompoundTester = ({token: {name, address}, removeToken}: PropsTypes) => {
     compound.redeem(token, value);
   }
 
-  return (
+  // Forgive the string coercion. Localstorage pain
+  return web3React.chainId && `${web3React.chainId}` == chainId ?(
     <div className="wallet-info">
       <h2>Token {name} ({address})</h2>
       <button onClick={() => removeToken()}>x Remove</button>
@@ -62,7 +59,9 @@ const CompoundTester = ({token: {name, address}, removeToken}: PropsTypes) => {
       <CompoundFunctionFactory name="Borrow" fn={borrow} />
       <CompoundFunctionFactory name="Redeem" fn={redeem} />
     </div>
-  );
+  ): <div>
+    {name} only avail on chain {chainId}
+  </div>;
 };
 
 export default CompoundTester;

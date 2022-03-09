@@ -62,9 +62,9 @@ function App() {
         <ConnectWallet />
         <AddToken addToken={addToken}/>
         
-        {tokens.map((token) => {
-          return <div className="w-full" key={token.id}>
-            <CompoundTester removeToken={() => removeToken(token.id)} token={token} />
+        {tokens.map((t) => {
+          return <div className="w-full" key={t.id}>
+            <CompoundTester removeToken={() => removeToken(t.id)} token={t} />
           </div>
         })}
 
