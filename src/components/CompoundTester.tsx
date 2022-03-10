@@ -7,6 +7,7 @@ import { CompoundInstance } from '@compound-finance/compound-js/dist/nodejs/type
 import CompoundFunctionFactory  from "./compound/compoundFunctionFactory";
 import { BigNumber, ethers } from 'ethers';
 import sampleAbi from '../lib/connectors/sampleAbi';
+import sampleCDai from '../lib/connectors/sampleCDai';
 
 
 interface PropsTypes {
@@ -20,7 +21,8 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
 
   // @ts-ignore
   const compound: CompoundInstance = new Compound(web3React.library?.getSigner());
-  const testaddr: string = "0xd6801a1DfFCd0a410336Ef88DeF4320D6DF1883e";
+  const rinkebyCEth: string = "0xd6801a1DfFCd0a410336Ef88DeF4320D6DF1883e";
+  const rinkebyCDai: string = "0x6D7F0754FFeb405d23C51CE938289d4835bE3b14";
 
   // @ts-ignore
   async function supply(token: string, value: string) {
@@ -31,23 +33,74 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
 
     // TODO: start with Rinkeby cEth 0xd6801a1DfFCd0a410336Ef88DeF4320D6DF1883e
 
-    let contract = new ethers.Contract(testaddr, sampleAbi, web3React.library?.getSigner());
-    let tx = await contract.mint({value: ethers.utils.parseUnits(value, 6) });
-    // TODO: test this
+    // TODO: Wire up form
+    value = '0.001';
+
+    const isCEth = false;
+    // // cEth is a special case, sending ETH not ERC20
+    if (true) {
+      console.log("eth value:", ethers.utils.parseEther(value));
+
+      let contract = new ethers.Contract(rinkebyCEth, sampleAbi, web3React.library?.getSigner());
+      let tx = await contract.mint({ value: ethers.utils.parseEther(value) });
+    }
+    // All other ERC20 cTokens
+    else {
+      // TODO: Need some rinkeby ERC20 token that's also on rinkeby compound to test this
+      // let contract = new ethers.Contract(rinkebyCDai, sampleCDai, web3React.library?.getSigner());
+      // let tx = await contract.mint(ethers.utils.parseEther(value));
+    }
   }
 
-  function borrow(token: string, value: number | string | BigNumber) {
+  async function borrow(token: string, value: string) {
+    console.log("borrow()");
+
     // TODO validate token
     // TODO: validate number
     // @ts-ignore
-    compound.borrow(token, value);
+
+    // TODO: Wire up form
+    value = '0.001';
+
+    const isCEth = true;
+    // // cEth is a special case, sending ETH not ERC20
+    if (true) {
+      console.log("eth value:", ethers.utils.parseEther(value), ethers.utils.parseEther(value).toString());
+
+      let contract = new ethers.Contract(rinkebyCEth, sampleAbi, web3React.library?.getSigner());
+      let tx = await contract.borrow(ethers.utils.parseEther(value));
+    }
+    // All other ERC20 cTokens
+    else {
+      // TODO: Need some rinkeby ERC20 token that's also on rinkeby compound to test this
+      // let contract = new ethers.Contract(rinkebyCDai, sampleCDai, web3React.library?.getSigner());
+      // let tx = await contract.borrow(ethers.utils.parseEther(value));
+    }
   }
 
-  function redeem(token: string, value: number | string | BigNumber) {
+  async function redeem(token: string, value: string) {
     // TODO validate token
     // TODO: validate number
     // @ts-ignore
-    compound.redeem(token, value);
+    // compound.redeem(token, value);
+
+    // TODO: Wire up form
+    value = '0.001';
+
+    const isCEth = true;
+    // // cEth is a special case, sending ETH not ERC20
+    if (true) {
+      console.log("eth value:", ethers.utils.parseEther(value), ethers.utils.parseEther(value).toString());
+
+      let contract = new ethers.Contract(rinkebyCEth, sampleAbi, web3React.library?.getSigner());
+      let tx = await contract.redeemUnderlying(ethers.utils.parseEther(value));
+    }
+    // All other ERC20 cTokens
+    else {
+      // TODO: Need some rinkeby ERC20 token that's also on rinkeby compound to test this
+      // let contract = new ethers.Contract(rinkebyCDai, sampleCDai, web3React.library?.getSigner());
+      // let tx = await contract.redeem(ethers.utils.parseEther(value));
+    }
   }
 
   // Forgive the string coercion. Localstorage pain
