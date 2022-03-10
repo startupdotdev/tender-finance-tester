@@ -27,20 +27,12 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
   // @ts-ignore
   async function supply(token: string, value: string) {
     // TODO validate token
-    // TODO: validate number
-    // @ts-ignore
-    // compound.supply(token, value);
+    // TODO: validate number    
 
-    // TODO: start with Rinkeby cEth 0xd6801a1DfFCd0a410336Ef88DeF4320D6DF1883e
-
-    // TODO: Wire up form
-    
-
-    const isCEth = false;
+    const isCEth = true;
     // // cEth is a special case, sending ETH not ERC20
     if (isCEth) {
-      console.log("eth value:", ethers.utils.parseEther(value));
-
+      // TODO: use real value here
       value = '0.001';
       let contract = new ethers.Contract(rinkebyCEth, sampleAbi, web3React.library?.getSigner());
       let tx = await contract.mint({ value: ethers.utils.parseEther(value) });
