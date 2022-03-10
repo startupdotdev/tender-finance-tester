@@ -7,8 +7,8 @@ import { CompoundInstance } from '@compound-finance/compound-js/dist/nodejs/type
 import CompoundFunctionFactory  from "./compound/compoundFunctionFactory";
 import { BigNumber, ethers } from 'ethers';
 import sampleAbi from '../lib/connectors/sampleAbi';
-import sampleCDai from '../lib/connectors/sampleCDai';
-
+import sampleErc20Abi from '../lib/connectors/sampleErc20Abi';
+import sampleCTokenAbi from '../lib/connectors/sampleCTokenAbi';
 
 interface PropsTypes {
   token: Token;
@@ -34,21 +34,32 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
     // TODO: start with Rinkeby cEth 0xd6801a1DfFCd0a410336Ef88DeF4320D6DF1883e
 
     // TODO: Wire up form
-    value = '0.001';
+    
 
     const isCEth = false;
     // // cEth is a special case, sending ETH not ERC20
-    if (true) {
+    if (isCEth) {
       console.log("eth value:", ethers.utils.parseEther(value));
 
+      value = '0.001';
       let contract = new ethers.Contract(rinkebyCEth, sampleAbi, web3React.library?.getSigner());
       let tx = await contract.mint({ value: ethers.utils.parseEther(value) });
     }
     // All other ERC20 cTokens
     else {
-      // TODO: Need some rinkeby ERC20 token that's also on rinkeby compound to test this
-      // let contract = new ethers.Contract(rinkebyCDai, sampleCDai, web3React.library?.getSigner());
-      // let tx = await contract.mint(ethers.utils.parseEther(value));
+      value = '10000000000000000';
+
+      // TODO: use underlying asset address 
+      // this hardcoded val is rinkeby Dai that Compound is expecting
+      let underlyingErc20Address = "0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea";
+
+      // TODO: pull this into it's own approve button?
+      let rinkebyDaiContract = new ethers.Contract(underlyingErc20Address, sampleErc20Abi, web3React.library?.getSigner());
+      let approvalVal = '1000000000000000000';
+      let approveDaiTransferTx = await rinkebyDaiContract.approve(rinkebyCDai, approvalVal);
+      
+      let contract = new ethers.Contract(rinkebyCDai, sampleCTokenAbi, web3React.library?.getSigner());
+      let tx = await contract.mint(ethers.BigNumber.from(value));
     }
   }
 
