@@ -9,102 +9,96 @@ import { BigNumber, ethers } from 'ethers';
 import sampleAbi from '../lib/connectors/sampleAbi';
 import sampleErc20Abi from '../lib/connectors/sampleErc20Abi';
 import sampleCTokenAbi from '../lib/connectors/sampleCTokenAbi';
+import { format } from 'path';
 
 interface PropsTypes {
   token: Token;
   removeToken: Function;
 }
 
-const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTypes) => {
-
+const CompoundTester = ({token: {name, address, chainId, underlyingAssetAddress}, removeToken}: PropsTypes) => {
   const web3React: Web3ReactContextInterface<Web3Provider> = useWeb3React<Web3Provider>();
 
-  // @ts-ignore
-  const compound: CompoundInstance = new Compound(web3React.library?.getSigner());
-  const rinkebyCEth: string = "0xd6801a1DfFCd0a410336Ef88DeF4320D6DF1883e";
-  const rinkebyCDai: string = "0x6D7F0754FFeb405d23C51CE938289d4835bE3b14";
+  console.log("token", name, address, chainId, underlyingAssetAddress);
+  // For easier debugging
+  // const rinkebyCEth: string = "0xd6801a1DfFCd0a410336Ef88DeF4320D6DF1883e";
+  // const rinkebyCDai: string = "0x6D7F0754FFeb405d23C51CE938289d4835bE3b14";
+  // const rinkebyDai = "0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea";
 
-  // @ts-ignore
+  const isCEth = underlyingAssetAddress ? false : true;
+
   async function supply(value: string) {
-    // TODO validate token
-    // TODO: validate number    
-
-    const isCEth = false;
-    // // cEth is a special case, sending ETH not ERC20
     if (isCEth) {
-      // TODO: use real value here
-      value = '0.001';
-      let contract = new ethers.Contract(rinkebyCEth, sampleAbi, web3React.library?.getSigner());
+      console.log("supply() w/ cEth");
+
+      const formattedValue = ethers.utils.parseEther(value);
+      console.log("input value:", value, "formattedValue:", formattedValue.toString());
+      
+      let contract = new ethers.Contract(address, sampleAbi, web3React.library?.getSigner());
       let tx = await contract.mint({ value: ethers.utils.parseEther(value) });
     }
-    // All other ERC20 cTokens
     else {
-      value = '20000000000000000';
+      console.log("supply() with cToken", name, address);
 
-      // TODO: use underlying asset address 
-      // this hardcoded val is rinkeby Dai that Compound is expecting
-      let underlyingErc20Address = "0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea";
+      const formattedValue = ethers.BigNumber.from(value);
+      console.log("input value:", value, "formattedValue:", formattedValue.toString());
 
-      // TODO: pull this into it's own approve button?
-      let rinkebyDaiContract = new ethers.Contract(underlyingErc20Address, sampleErc20Abi, web3React.library?.getSigner());
-      let approvalVal = '1000000000000000000';
-      let approveDaiTransferTx = await rinkebyDaiContract.approve(rinkebyCDai, approvalVal);
-      
-      let contract = new ethers.Contract(rinkebyCDai, sampleCTokenAbi, web3React.library?.getSigner());
-      let tx = await contract.mint(ethers.BigNumber.from(value));
+      let contract = new ethers.Contract(address, sampleCTokenAbi, web3React.library?.getSigner());
+      let tx = await contract.mint(formattedValue);
     }
   }
 
-  async function borrow(value: string) {
-    console.log("borrow()");
-
-    // TODO validate token
-    // TODO: validate number
-    // @ts-ignore
-
-    // TODO: Wire up form
-  
-    const isCEth = true;
-    // cEth is a special case, sending ETH not ERC20
+  async function borrow(value: string) {  
     if (isCEth) {
-      value = '0.001';
-      let contract = new ethers.Contract(rinkebyCEth, sampleAbi, web3React.library?.getSigner());
-      let tx = await contract.borrow(ethers.utils.parseEther(value));
+      console.log("borrow() with cEth");
+
+      const formattedValue = ethers.utils.parseEther(value);
+      console.log("input value:", value, "formattedValue:", formattedValue);
+
+      let contract = new ethers.Contract(address, sampleAbi, web3React.library?.getSigner());
+      let tx = await contract.borrow(formattedValue);
     }
-    // All other ERC20 cTokens
     else {
-      value = '10000000000000000';
-      let contract = new ethers.Contract(rinkebyCDai, sampleCTokenAbi, web3React.library?.getSigner());
-      let tx = await contract.borrow(value);
+      console.log("borrow() with cToken", name, address);
+
+      const formattedValue = value;
+      console.log("input value:", value, "formattedValue:", formattedValue);
+
+      let contract = new ethers.Contract(address, sampleCTokenAbi, web3React.library?.getSigner());
+      let tx = await contract.borrow(formattedValue);
     }
   }
 
   async function redeem(value: string) {
-    // TODO validate token
-    // TODO: validate number
-    // @ts-ignore
-    // compound.redeem(token, value);
-
-    // TODO: Wire up form
-
-    const isCEth = false;
-    // // cEth is a special case, sending ETH not ERC20
     if (isCEth) {
-      value = '0.001';
+      console.log("redeem() with cEth");
 
-      let contract = new ethers.Contract(rinkebyCEth, sampleAbi, web3React.library?.getSigner());
-      let tx = await contract.redeemUnderlying(ethers.utils.parseEther(value));
+      const formattedValue = ethers.utils.parseEther(value);
+      console.log("input value:", value, "formattedValue:", formattedValue);
+
+      let contract = new ethers.Contract(address, sampleAbi, web3React.library?.getSigner());
+      let tx = await contract.redeemUnderlying(formattedValue);
     }
-    // All other ERC20 cTokens
     else {
-      value = '10000000000000000';
-      let contract = new ethers.Contract(rinkebyCDai, sampleCTokenAbi, web3React.library?.getSigner());
-      let tx = await contract.redeem(ethers.utils.parseEther(value));
+      console.log("redeem() with cToken", name, "address:", address);
+
+      const formattedValue = ethers.utils.parseEther(value);
+      console.log("input value:", value, "formattedValue:", formattedValue);
+
+      let contract = new ethers.Contract(address, sampleCTokenAbi, web3React.library?.getSigner());
+      let tx = await contract.redeem(formattedValue);
     }
   }
 
   async function approve(value: string) {
-    // TODO
+    if (isCEth) {
+      throw "Don't need to approve ETH";
+    }
+
+    // @ts-ignore
+    let contract = new ethers.Contract(underlyingAssetAddress, sampleErc20Abi, web3React.library?.getSigner());
+    let approvalVal = '1000000000000000000';
+    let approvalTx = await contract.approve(address, approvalVal);
   }
 
   // Forgive the string coercion. Localstorage pain
@@ -118,7 +112,8 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
       <CompoundFunctionFactory name="Supply" fn={supply} />
       <CompoundFunctionFactory name="Borrow" fn={borrow} />
       <CompoundFunctionFactory name="Redeem" fn={redeem} />
-      <CompoundFunctionFactory name="Approve" fn={approve} />
+
+      {isCEth === false && <CompoundFunctionFactory name="Approve" fn={approve} />}
     </div>
   ): <div>
     {name} only avail on chain {chainId}

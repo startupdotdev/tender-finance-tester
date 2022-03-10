@@ -7,6 +7,6 @@ interface Token {
   name: string;
   address: string;
   chainId?: string;
-  underlyingAddress?: string;
+  underlyingAssetAddress?: string;
 }
 

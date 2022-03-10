@@ -34,7 +34,7 @@ let DUMMY_TOKEN: Token = {
 
 function App() {
 
-  const [tokens, setTokens] = useLocalStorage<Token[]>("tokens", [DUMMY_TOKEN]);
+  const [tokens, setTokens] = useLocalStorage<Token[]>("tokens", []);
 
   function addToken(token: Token) {
     setTokens([...tokens, token]);

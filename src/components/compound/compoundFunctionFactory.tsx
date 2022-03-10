@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form";
 
 const CompoundFunctionFactory = (props: { name: string, fn: Function}) => {
 
-  const {register, handleSubmit} = useForm();
+  const {register, handleSubmit, formState: {errors}} = useForm();
 
   // TODO: reset data after successful submit
 
@@ -15,7 +15,10 @@ const CompoundFunctionFactory = (props: { name: string, fn: Function}) => {
         <div className="label">
           Amount:
         </div>
-        <input {...register("amount")} value="9" />
+        <input {...register("amount", {required: true})} />
+        <div className="error-text">
+          {errors.name?.type ==='required' && <p>Amount is required</p>}
+        </div>
     </div>
     <div>
         <input type="submit" />
