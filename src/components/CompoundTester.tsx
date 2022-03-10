@@ -104,7 +104,8 @@ const CompoundTester = ({token: {name, address, chainId, underlyingAssetAddress}
   // Forgive the string coercion. Localstorage pain
   return web3React.chainId && `${web3React.chainId}` == chainId ?(
     <div className="box">
-      <h2>Token {name} ({address})</h2>
+      <h2>{name}</h2>
+      <p>{address}</p>
       <button onClick={() => removeToken()}>x Remove</button>
 
       <hr style={{margin: "2rem 0" }}/>

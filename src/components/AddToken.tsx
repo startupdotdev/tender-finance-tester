@@ -50,8 +50,8 @@ const AddToken = (props: Props) => {
       <div className='label'>
         Underlying token address
       </div>
-      <input placeholder='Underling token (optional)' {...register("underlyingAssetAddress")} /> 
-      <div className="small-text">Optional. If no address is given, token treated as ETH.</div>
+      <input placeholder='Underlying token (required for cTokens)' {...register("underlyingAssetAddress")} /> 
+      <div className="small-text">Required for cTokens. Leave blank for ETH.</div>
     </div>
 
       <input type="hidden" {...register("chainId")} />

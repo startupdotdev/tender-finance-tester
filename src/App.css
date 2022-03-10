@@ -2,7 +2,9 @@
 html {
   box-sizing: border-box;
 }
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
@@ -34,6 +36,7 @@ input {
 .small-text {
   font-size: 10px;
   color: rgb(121, 121, 121);
+  margin-top: 8px;
 }
 
 .error-text {
@@ -53,7 +56,8 @@ input {
   width: 100%;
 }
 
-button, input[type=submit] {
+button,
+input[type="submit"] {
   padding: 1rem;
   border-radius: 12px;
   outline: none;
