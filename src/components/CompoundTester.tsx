@@ -99,7 +99,7 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
     else {
       value = '10000000000000000';
       let contract = new ethers.Contract(rinkebyCDai, sampleCTokenAbi, web3React.library?.getSigner());
-      let tx = await contract.redeemUnderlying(ethers.utils.parseEther(value));
+      let tx = await contract.redeem(ethers.utils.parseEther(value));
     }
   }
 
