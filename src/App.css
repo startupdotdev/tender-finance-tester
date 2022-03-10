@@ -15,21 +15,40 @@ html {
   max-width: 600px;
 }
 
-.connect-wallet,
-.wallet-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
+.label {
+  display: inline-block;
+  width: 125px;
+  font-size: 13px;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+input {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
+  width: 230px;
+}
+
+.small-text {
+  font-size: 10px;
+  color: rgb(121, 121, 121);
+}
+
+.error-text {
+  font-size: 10px;
+  color: red;
+}
+
+.box {
   padding: 2rem;
+  width: 100%;
   border-radius: 0.25rem;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
 }
 
-.wallet-info > div > p:first-of-type {
-  overflow-x: auto;
-}
 .w-full {
   width: 100%;
 }

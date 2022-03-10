@@ -5,7 +5,7 @@ import { chainIdToNetwork } from '../lib/connectors/constants';
 const WalletInfo = () => {
   const { active, chainId, account, error } = useWeb3React<Web3Provider>();
   return (
-    <div className="wallet-info">
+    <div className="box">
       <h3>Tender.Finance Tester</h3>
       <p>active: {active.toString()}</p>
       {active && (

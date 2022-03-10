@@ -7,17 +7,20 @@ const CompoundFunctionFactory = (props: { name: string, fn: Function}) => {
   // TODO: reset data after successful submit
 
   return (
-    <form onSubmit={handleSubmit(data => props.fn(data.token, data.value))}>
+    <form onSubmit={handleSubmit(data => props.fn(data.amount))}>
     <h3>
        {props.name} 
     </h3>
-    <div>
-        Amount:
+    <div className="field">
+        <div className="label">
+          Amount:
+        </div>
         <input {...register("amount")} value="9" />
     </div>
     <div>
         <input type="submit" />
     </div>
+    <hr style={{margin: "2rem 0" }}/>
     </form>
   );
 };

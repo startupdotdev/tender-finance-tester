@@ -24,15 +24,35 @@ const AddToken = (props: Props) => {
     <form onSubmit={handleSubmit(data => {
       props.addToken(data);
       reset();
-    })} className="wallet-info">
+    })} className="box">
       <h2>
         Add new token
       </h2>
-      <p> Token Address <input {...register("address", {required: true})} placeholder='Token Address'/> </p>
-      {errors.address?.type === 'required' && <p style={{color: 'red'}}>Token Address is required</p>}
+      <div className='field'>  
+        <div className="label">Token Address </div>
+        <input {...register("address", {required: true})} placeholder='Token Address'/> 
+        <div className="error-text">
+          {errors.address?.type === 'required' && <p>Token Address is required</p>}
+        </div>
+      </div>
 
-      <p> Token Name <input placeholder='Token Name' {...register("name", {required: true})} /> </p>
-      {errors.name?.type ==='required' && <p style={{color: 'red'}}>Token Name is required</p>}
+      <div className="field"> 
+        <div className="label">
+          Token Name
+        </div> 
+        <input placeholder='Token Name' {...register("name", {required: true})} /> 
+        <div className="error-text">
+          {errors.name?.type ==='required' && <p>Token Name is required</p>}
+        </div>
+      </div>
+
+    <div className="field">
+      <div className='label'>
+        Underlying token address
+      </div>
+      <input placeholder='Underling token (optional)' {...register("underlyingAddress")} /> 
+      <div className="small-text">Optional. If no address is given, token treated as ETH.</div>
+    </div>
 
       <input type="hidden" {...register("chainId")} />
       <input type="hidden" {...register("id")} />

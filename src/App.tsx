@@ -2,7 +2,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import useLocalStorage from './hooks/use-local-storage';
-import {useEffect, useState} from 'react';
 import { Web3ReactProvider } from '@web3-react/core';
 import {
   ExternalProvider,
@@ -25,13 +24,6 @@ function getLibrary(
   const library = new Web3Provider(provider);
   library.pollingInterval = 8000;
   return library;
-}
-
-interface Token {
-  id: string;
-  name: string;
-  address: string;
-  chainId?: string;
 }
 
 let DUMMY_TOKEN: Token = {

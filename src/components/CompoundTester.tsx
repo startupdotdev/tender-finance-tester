@@ -25,7 +25,7 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
   const rinkebyCDai: string = "0x6D7F0754FFeb405d23C51CE938289d4835bE3b14";
 
   // @ts-ignore
-  async function supply(token: string, value: string) {
+  async function supply(value: string) {
     // TODO validate token
     // TODO: validate number    
 
@@ -55,7 +55,7 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
     }
   }
 
-  async function borrow(token: string, value: string) {
+  async function borrow(value: string) {
     console.log("borrow()");
 
     // TODO validate token
@@ -79,7 +79,7 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
     }
   }
 
-  async function redeem(token: string, value: string) {
+  async function redeem(value: string) {
     // TODO validate token
     // TODO: validate number
     // @ts-ignore
@@ -103,14 +103,22 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
     }
   }
 
+  async function approve(value: string) {
+    // TODO
+  }
+
   // Forgive the string coercion. Localstorage pain
   return web3React.chainId && `${web3React.chainId}` == chainId ?(
-    <div className="wallet-info">
+    <div className="box">
       <h2>Token {name} ({address})</h2>
       <button onClick={() => removeToken()}>x Remove</button>
+
+      <hr style={{margin: "2rem 0" }}/>
+      
       <CompoundFunctionFactory name="Supply" fn={supply} />
       <CompoundFunctionFactory name="Borrow" fn={borrow} />
       <CompoundFunctionFactory name="Redeem" fn={redeem} />
+      <CompoundFunctionFactory name="Approve" fn={approve} />
     </div>
   ): <div>
     {name} only avail on chain {chainId}

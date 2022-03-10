@@ -36,7 +36,7 @@ const ConnectWallet = () => {
   }, [active]);
 
   return (
-    <div className="connect-wallet">
+    <div className="box">
       {active && (
         <button className="button-disconnect" onClick={handleDisconnect}>
           Disconnect Wallet

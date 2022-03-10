@@ -3,8 +3,10 @@ interface Window {
 }
 
 interface Token {
+  id: string;
   name: string;
   address: string;
   chainId?: string;
-  id: string;
+  underlyingAddress?: string;
 }
+
