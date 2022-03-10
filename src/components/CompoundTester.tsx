@@ -29,7 +29,7 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
     // TODO validate token
     // TODO: validate number    
 
-    const isCEth = true;
+    const isCEth = false;
     // // cEth is a special case, sending ETH not ERC20
     if (isCEth) {
       // TODO: use real value here
@@ -39,7 +39,7 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
     }
     // All other ERC20 cTokens
     else {
-      value = '10000000000000000';
+      value = '20000000000000000';
 
       // TODO: use underlying asset address 
       // this hardcoded val is rinkeby Dai that Compound is expecting
@@ -63,21 +63,19 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
     // @ts-ignore
 
     // TODO: Wire up form
-    value = '0.001';
-
+  
     const isCEth = true;
-    // // cEth is a special case, sending ETH not ERC20
-    if (true) {
-      console.log("eth value:", ethers.utils.parseEther(value), ethers.utils.parseEther(value).toString());
-
+    // cEth is a special case, sending ETH not ERC20
+    if (isCEth) {
+      value = '0.001';
       let contract = new ethers.Contract(rinkebyCEth, sampleAbi, web3React.library?.getSigner());
       let tx = await contract.borrow(ethers.utils.parseEther(value));
     }
     // All other ERC20 cTokens
     else {
-      // TODO: Need some rinkeby ERC20 token that's also on rinkeby compound to test this
-      // let contract = new ethers.Contract(rinkebyCDai, sampleCDai, web3React.library?.getSigner());
-      // let tx = await contract.borrow(ethers.utils.parseEther(value));
+      value = '10000000000000000';
+      let contract = new ethers.Contract(rinkebyCDai, sampleCTokenAbi, web3React.library?.getSigner());
+      let tx = await contract.borrow(value);
     }
   }
 
@@ -88,21 +86,20 @@ const CompoundTester = ({token: {name, address, chainId}, removeToken}: PropsTyp
     // compound.redeem(token, value);
 
     // TODO: Wire up form
-    value = '0.001';
 
-    const isCEth = true;
+    const isCEth = false;
     // // cEth is a special case, sending ETH not ERC20
-    if (true) {
-      console.log("eth value:", ethers.utils.parseEther(value), ethers.utils.parseEther(value).toString());
+    if (isCEth) {
+      value = '0.001';
 
       let contract = new ethers.Contract(rinkebyCEth, sampleAbi, web3React.library?.getSigner());
       let tx = await contract.redeemUnderlying(ethers.utils.parseEther(value));
     }
     // All other ERC20 cTokens
     else {
-      // TODO: Need some rinkeby ERC20 token that's also on rinkeby compound to test this
-      // let contract = new ethers.Contract(rinkebyCDai, sampleCDai, web3React.library?.getSigner());
-      // let tx = await contract.redeem(ethers.utils.parseEther(value));
+      value = '10000000000000000';
+      let contract = new ethers.Contract(rinkebyCDai, sampleCTokenAbi, web3React.library?.getSigner());
+      let tx = await contract.redeemUnderlying(ethers.utils.parseEther(value));
     }
   }
 
